@@ -55,7 +55,7 @@ function Header() {
             </div>
             {/* Navbar */}
             <NavigationMenu>
-                <NavigationMenuList className='gap-4'>
+                <NavigationMenuList className='gap-8'>
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Courses</NavigationMenuTrigger>
                         <NavigationMenuContent>
