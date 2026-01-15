@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -12,6 +13,7 @@ import {
     NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
 import Link from 'next/link'
+import { useClerk, UserButton } from '@clerk/nextjs'
 
 const courses = [
     {
@@ -47,6 +49,9 @@ const courses = [
 ]
 
 function Header() {
+
+    const { user } = useClerk()
+
     return (
         <div className='p-4 max-w-7xl flex justify-between items-center w-full'>
             <div className='flex gap-2 items-center'>
@@ -69,7 +74,7 @@ function Header() {
                             </ul>
                         </NavigationMenuContent>
                     </NavigationMenuItem>
-                     <NavigationMenuItem>
+                    <NavigationMenuItem>
                         <NavigationMenuLink asChild>
                             <Link href={'/projects'}>
                                 Projects
@@ -83,7 +88,7 @@ function Header() {
                             </Link>
                         </NavigationMenuLink>
                     </NavigationMenuItem>
-                     <NavigationMenuItem>
+                    <NavigationMenuItem>
                         <NavigationMenuLink asChild>
                             <Link href={'/contact'}>
                                 Contact us
@@ -92,7 +97,14 @@ function Header() {
                     </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>
-            <Button className='font-game text-2xl' variant={'pixel'}>Sign Up</Button>
+            {!user ? <Link href={'/sign-in'}>
+                <Button className='font-game text-2xl' variant={'pixel'}>Sign Up</Button>
+            </Link>
+                : <div className='flex gap-2 items-center'>
+                    <Button className='font-game text-2xl' variant={'pixel'}>Dashboard</Button>
+                    <UserButton />
+                </div>
+            }
         </div>
     )
 }
