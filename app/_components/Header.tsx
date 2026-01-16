@@ -51,6 +51,23 @@ const courses = [
 function Header() {
 
     const { user } = useClerk()
+    const [mounted, setMounted] = React.useState(false)
+
+    React.useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) {
+        return (
+            <div className='p-4 max-w-7xl flex justify-between items-center w-full'>
+                <div className='flex gap-2 items-center'>
+                    <Image src={'/crown.png'} alt='logo' width={40} height={40} />
+                    <h2 className='font-bold text-3xl font-game'>CodeBox</h2>
+                </div>
+                <div className='h-9 w-32 bg-transparent' />
+            </div>
+        )
+    }
 
     return (
         <div className='p-4 max-w-7xl flex justify-between items-center w-full'>
