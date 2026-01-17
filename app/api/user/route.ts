@@ -5,28 +5,35 @@ import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    
-    const user = await currentUser();
+    try {
+        const user = await currentUser();
 
-    //If user already exist?
-    const users = await db.select().from(usersTable)
-        //@ts-ignore
-        .where(eq(usersTable.email, user?.primaryEmailAddress?.emailAddress))
-
-    //If Not& the Create New user Record
-    if (users?.length <= 0) {
-        const newUser = {
-            name: user?.fullName ?? '',
-            email: user?.primaryEmailAddress?.emailAddress ?? '',
-            age: 0,
-            points: 0
+        if (!user) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
-        
-        const result = await db.insert(usersTable)
-            .values(newUser)
+
+        //If user already exist?
+        const users = await db.select().from(usersTable)
+            //@ts-ignore
+            .where(eq(usersTable.email, user?.primaryEmailAddress?.emailAddress))
+
+        //If Not& the Create New user Record
+        if (users?.length <= 0) {
+            const newUser = {
+                name: user?.fullName ?? '',
+                email: user?.primaryEmailAddress?.emailAddress ?? '',
+                age: 0,
+                points: 0
+            }
+            
+            const result = await db.insert(usersTable)
+                .values(newUser)
             return NextResponse.json(newUser)
+        }
+        return NextResponse.json(users[0])
+    } catch (error) {
+        console.error('Error in user API:', error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
-    return NextResponse.json(users[0])
-    //Return User Info
-    
 }
+
