@@ -6,6 +6,9 @@ import axios from 'axios';
 import { Course } from '../_components/CourseList';
 import CourseChapters from './_components/CourseChapters';
 import CourseStatus from './_components/CourseStatus';
+import CommunityHelpers from './_components/CommunityHelpers';
+import UpgradeToPro from '../../Dashbaord/_components/UpgradeToPro';
+import CommunityHelpSection from './_components/CommunityHelpSection';
 
 function CourseDetail() {
   const { courseId } = useParams();
@@ -30,7 +33,9 @@ function CourseDetail() {
              <CourseChapters loading={loading} courseDetail={courseDetail} />
           </div>
           <div>
-            <CourseStatus/>
+            <CourseStatus courseDetail={courseDetail} />
+            <UpgradeToPro/>
+            <CommunityHelpSection/>
           </div>
         </div>
     </div>
